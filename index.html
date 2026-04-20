@@ -4,209 +4,250 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Viviendo en Modo Automático</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #faf9f6;
-      --text: #2c2c2c;
+      --text: #242424;
       --muted: #6b6b6b;
       --accent: #8b6f47;
+      --accent-pale: rgba(139, 111, 71, 0.10);
       --rule: #ddd6c8;
       --max-width: 680px;
+      --serif: 'EB Garamond', Georgia, serif;
+      --display: 'Cormorant Garamond', Georgia, serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    #progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--accent);
+      z-index: 1000;
+      transition: width 0.08s linear;
     }
 
-    html {
-      font-size: 18px;
-      scroll-behavior: smooth;
-    }
+    html { font-size: 19px; scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: "Georgia", "Times New Roman", serif;
-      line-height: 1.8;
-      padding: 3rem 1.5rem 6rem;
+      font-family: var(--serif);
+      line-height: 1.85;
+      padding: 4rem 1.5rem 7rem;
     }
 
-    main {
-      max-width: var(--max-width);
-      margin: 0 auto;
-    }
+    main { max-width: var(--max-width); margin: 0 auto; }
 
-    /* Header */
+    /* ── Header ── */
     header {
       text-align: center;
-      margin-bottom: 4rem;
-      padding-bottom: 2.5rem;
+      margin-bottom: 4.5rem;
+      padding-bottom: 3rem;
       border-bottom: 1px solid var(--rule);
     }
 
+    .header-deco {
+      display: block;
+      color: var(--accent);
+      font-size: 1rem;
+      letter-spacing: 0.45em;
+      margin-bottom: 1.5rem;
+      opacity: 0.55;
+    }
+
     header h1 {
-      font-size: 2rem;
-      font-weight: normal;
-      letter-spacing: 0.02em;
-      line-height: 1.3;
-      margin-bottom: 0.75rem;
+      font-family: var(--display);
+      font-size: 2.75rem;
+      font-weight: 500;
+      letter-spacing: 0.015em;
+      line-height: 1.15;
+      margin-bottom: 0.85rem;
     }
 
     header .subtitle {
-      font-size: 0.95rem;
+      font-family: var(--display);
+      font-size: 1.05rem;
       color: var(--muted);
       font-style: italic;
-      letter-spacing: 0.01em;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
     }
 
-    /* Dedication */
+    .reading-meta {
+      font-size: 0.72rem;
+      color: var(--rule);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* ── Dedication ── */
     .dedicatoria {
-      margin: 2.5rem 0 3.5rem;
-      padding: 1.75rem 2rem;
+      margin: 2.5rem 0 4rem;
+      padding: 1.75rem 2.5rem 1.75rem 2.25rem;
       border-left: 2px solid var(--accent);
-      background: rgba(139, 111, 71, 0.04);
+      background: var(--accent-pale);
     }
 
     .dedicatoria p {
+      font-family: var(--display);
       font-style: italic;
       color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 0.75rem;
-      line-height: 1.9;
+      font-size: 1.05rem;
+      margin-bottom: 0.8rem;
+      line-height: 1.95;
     }
 
-    .dedicatoria p:last-child {
-      margin-bottom: 0;
-    }
+    .dedicatoria p:last-child { margin-bottom: 0; }
 
-    /* Table of contents */
+    /* ── Table of contents ── */
     .toc {
-      margin: 3rem 0;
-      padding: 1.5rem 2rem;
+      margin: 3.5rem 0;
+      padding: 1.75rem 2.25rem;
       background: rgba(0,0,0,0.02);
       border: 1px solid var(--rule);
     }
 
-    .toc h2 {
-      font-size: 0.8rem;
+    .toc-label {
+      font-size: 0.7rem;
       font-weight: normal;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
     }
 
-    .toc ol {
-      list-style: none;
-      counter-reset: toc;
-    }
+    .toc ol { list-style: none; counter-reset: toc; }
 
     .toc li {
       counter-increment: toc;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.5rem;
       font-size: 0.9rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.6em;
     }
 
     .toc li::before {
-      content: counter(toc, upper-roman) ". ";
+      content: counter(toc, upper-roman);
+      font-family: var(--display);
+      font-size: 0.75em;
       color: var(--accent);
-      margin-right: 0.3em;
-      font-size: 0.8em;
+      min-width: 1.8em;
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
     }
 
     .toc a {
       color: var(--text);
       text-decoration: none;
       border-bottom: 1px solid transparent;
-      transition: border-color 0.2s;
+      transition: color 0.2s, border-color 0.2s;
     }
 
     .toc a:hover {
+      color: var(--accent);
       border-bottom-color: var(--accent);
     }
 
-    /* Sections */
-    section {
-      margin-bottom: 4rem;
-    }
+    .toc li.active a { color: var(--accent); }
+
+    /* ── Sections ── */
+    section { margin-bottom: 5rem; }
 
     section h2 {
-      font-size: 1.15rem;
-      font-weight: normal;
-      color: var(--accent);
-      letter-spacing: 0.02em;
-      margin-bottom: 1.75rem;
-      padding-bottom: 0.5rem;
+      margin-bottom: 2.25rem;
+      padding-bottom: 1rem;
       border-bottom: 1px solid var(--rule);
+      line-height: 1.25;
+    }
+
+    .ch-num {
+      display: block;
+      font-family: var(--display);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.3em;
+    }
+
+    .ch-title {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.55rem;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    /* Drop cap on first paragraph of each section */
+    section > p:first-of-type::first-letter {
+      font-family: var(--display);
+      font-size: 4rem;
+      font-weight: 600;
+      float: left;
+      line-height: 0.78;
+      margin-right: 0.07em;
+      margin-top: 0.09em;
+      color: var(--accent);
     }
 
     p {
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.5rem;
       text-align: justify;
       hyphens: auto;
     }
 
-    p:last-child {
-      margin-bottom: 0;
-    }
+    p:last-child { margin-bottom: 0; }
 
-    /* Inline styles */
-    strong {
-      font-weight: bold;
-      color: #1e1e1e;
-    }
+    strong { font-weight: 600; color: #1a1a1a; }
+    em { font-style: italic; }
 
-    em {
-      font-style: italic;
-    }
-
-    /* Horizontal rule */
     hr {
       border: none;
       border-top: 1px solid var(--rule);
-      margin: 3rem 0;
+      margin: 3.5rem 0;
     }
 
-    /* Bibliography */
+    /* ── Bibliography ── */
     .bibliografia {
-      margin-top: 4rem;
-      padding-top: 2rem;
+      margin-top: 5rem;
+      padding-top: 2.5rem;
       border-top: 1px solid var(--rule);
     }
 
-    .bibliografia h2 {
-      font-size: 0.85rem;
+    .bibliografia > h2 {
+      font-size: 0.72rem;
       font-weight: normal;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 2rem;
-      border: none;
+      margin-bottom: 2.5rem;
     }
 
-    .bib-section {
-      margin-bottom: 2rem;
-    }
+    .bib-section { margin-bottom: 2.25rem; }
 
     .bib-section h3 {
-      font-size: 0.9rem;
-      font-weight: bold;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
+      font-family: var(--display);
+      font-size: 1rem;
+      font-weight: 500;
       font-style: italic;
+      color: var(--text);
+      margin-bottom: 0.85rem;
     }
 
-    .bib-section ul {
-      list-style: none;
-      padding-left: 0;
-    }
+    .bib-section ul { list-style: none; padding-left: 0; }
 
     .bib-section li {
       font-size: 0.88rem;
       line-height: 1.7;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.65rem;
       padding-left: 1.2em;
       text-indent: -1.2em;
       color: var(--muted);
@@ -217,29 +258,61 @@
       color: var(--accent);
     }
 
-    /* Footer */
+    /* ── Footer ── */
     footer {
       text-align: center;
-      margin-top: 5rem;
-      font-size: 0.8rem;
+      margin-top: 6rem;
+      font-size: 1.4rem;
       color: var(--rule);
-      letter-spacing: 0.05em;
     }
 
-    /* Responsive */
+    /* ── Back to top ── */
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      background: var(--accent);
+      color: #faf9f6;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #back-to-top.visible {
+      opacity: 0.65;
+      pointer-events: auto;
+    }
+
+    #back-to-top:hover { opacity: 1; }
+
+    /* ── Responsive ── */
     @media (max-width: 600px) {
-      html { font-size: 16px; }
-      body { padding: 2rem 1.25rem 4rem; }
-      header h1 { font-size: 1.6rem; }
+      html { font-size: 17px; }
+      body { padding: 2.5rem 1.25rem 5rem; }
+      header h1 { font-size: 2.1rem; }
+      .ch-title { font-size: 1.3rem; }
+      section > p:first-of-type::first-letter { font-size: 3.2rem; }
+      #back-to-top { bottom: 1.25rem; right: 1.25rem; }
     }
   </style>
 </head>
 <body>
+<div id="progress"></div>
 <main>
 
   <header>
+    <span class="header-deco">&#10022; &#10022; &#10022;</span>
     <h1>Viviendo en Modo Automático</h1>
     <p class="subtitle">Una cartografía del despertar desde la Cábala, la neurociencia y el budismo</p>
+    <span class="reading-meta">~18 min de lectura</span>
   </header>
 
   <div class="dedicatoria">
@@ -249,7 +322,7 @@
   </div>
 
   <nav class="toc">
-    <h2>Índice</h2>
+    <p class="toc-label">Índice</p>
     <ol>
       <li><a href="#prologo">Prólogo: una advertencia al lector</a></li>
       <li><a href="#infancia">La infancia: cuando se imprimen los sellos</a></li>
@@ -262,7 +335,10 @@
   </nav>
 
   <section id="prologo">
-    <h2>I. Prólogo: una advertencia al lector</h2>
+    <h2>
+      <span class="ch-num">I &mdash; Prólogo</span>
+      <span class="ch-title">Una advertencia al lector</span>
+    </h2>
     <p>Este ensayo no es un texto académico. Tampoco es un texto histórico, ni una exégesis rigurosa de las tradiciones que invoca. Quien busque erudición filológica sobre la Cábala luriánica, neurociencia cognitiva o filosofía oriental hará bien en cerrar este documento ahora y dirigirse a las obras que cito al final. Lo que el lector tiene en sus manos es algo más modesto y, a la vez, más arriesgado: una experiencia personal pensada en voz alta, atravesada por marcos conceptuales que la han ayudado a comprenderse a sí misma.</p>
     <p>Quiero declarar desde el inicio una falacia que cometo a sabiendas: la <strong>falacia de generalización</strong>. Voy a partir de mi propia historia individual y voy a permitirme inferir, desde ella, ciertas estructuras que sospecho universales. Sé que esto es lógicamente impropio. Lo hago de todas maneras, porque creo que hay un valor en compartir el mapa que uno traza incluso si ese mapa solo es estrictamente válido para el territorio de uno mismo. El lector decidirá si algo de este mapa le sirve para orientarse en su propio territorio. Si no le sirve, lo descarta. Si le sirve, que lo use.</p>
     <p>La segunda advertencia es más importante: este ensayo no se escribe desde la cima de la montaña. Se escribe desde el medio de la subida, con las rodillas raspadas y la respiración entrecortada. No soy un maestro. No he despertado. No vibro en la frecuencia de la Fuente. Apenas estoy aprendiendo a reconocer cuántas máscaras llevo puestas y cuánto pegamento de ego sostiene la idea de quien creo ser. Si algún lector busca un gurú, este texto lo va a decepcionar. Si busca un compañero de camino dispuesto a decir en voz alta lo que muchos pensamos en silencio, quizás encuentre algo aquí.</p>
@@ -270,7 +346,10 @@
   </section>
 
   <section id="infancia">
-    <h2>II. La infancia: cuando se imprimen los sellos</h2>
+    <h2>
+      <span class="ch-num">II &mdash; La infancia</span>
+      <span class="ch-title">Cuando se imprimen los sellos</span>
+    </h2>
     <p>Nací en los años ochenta. En los noventa nació mi hermana. Tengo además dos hermanos mayores. La fotografía familiar, mirada desde fuera, no tiene nada extraordinario. Mirada desde dentro, fue el laboratorio donde se grabaron los primeros patrones que durante décadas creí que eran mi identidad.</p>
     <p>La infancia de la que vengo fue abusiva. Lo digo sin adornos y también sin extenderme, porque este ensayo no es ajuste de cuentas ni denuncia: es legado. Quienes hayan vivido algo parecido sabrán reconocer entre líneas todo lo que aquí no escribo. Quienes no, pueden entender simplemente que un niño, antes de cumplir los diez años, ya había aprendido que el mundo era un lugar donde había que sobrevivir.</p>
     <p>Tres tradiciones, muy distintas entre sí, describen lo que ocurre en esos primeros años de la vida. Las invoco no como adornos eruditos, sino porque cada una ilumina una cara distinta del mismo fenómeno.</p>
@@ -282,7 +361,10 @@
   </section>
 
   <section id="adolescencia">
-    <h2>III. La adolescencia: el nacimiento de las máscaras</h2>
+    <h2>
+      <span class="ch-num">III &mdash; La adolescencia</span>
+      <span class="ch-title">El nacimiento de las máscaras</span>
+    </h2>
     <p>Pasados los primeros sellos, llega la segunda gran imprenta de la vida: la adolescencia. Es la época en que se experimenta por primera vez el amor, el deseo, la pertenencia, la traición. Es también, y esto es lo que aquí me interesa, la época en que el organismo psíquico, a partir de las marcas recibidas en la infancia, fabrica las <strong>máscaras</strong> con las que va a transitar las décadas siguientes.</p>
     <p>Mi máscara fue clara y la reconozco hoy con nitidez: el que pasa por debajo del radar. El que no contradice. El que cede primero. El que se calla para no provocar. El que aprende a leer el estado de ánimo de los demás con la precisión de un sismógrafo, porque toda su seguridad depende de anticipar la próxima sacudida. La psicología del trauma lo nombra con palabras técnicas: hipervigilancia, evitación, complacencia adaptativa, respuesta de "fawn". El nombre que se le dé importa menos que entender qué función cumple. Y la función es siempre la misma: protegerme. La máscara no apareció para hacerme infeliz; apareció porque sin ella la infelicidad habría sido peor.</p>
     <p>Aquí quiero detenerme en algo que durante años yo mismo malinterpreté, y que veo malinterpretar a casi cualquier buscador espiritual contemporáneo: <strong>el ego no es el enemigo</strong>. He visto y he intentado yo mismo, durante años, prácticas y discursos enteros dedicados a "matar el ego", "trascender el ego", "disolver el ego". Hay una violencia escondida en ese vocabulario. Es la violencia de querer arrancar el tejido cicatrizal sin haber sanado la herida que lo produjo. Sin la cicatriz, la herida se vuelve a abrir.</p>
@@ -293,7 +375,10 @@
   </section>
 
   <section id="veinte-treinta">
-    <h2>IV. Los veinte y los treinta: el piloto automático en pleno vuelo</h2>
+    <h2>
+      <span class="ch-num">IV &mdash; Los veinte y los treinta</span>
+      <span class="ch-title">El piloto automático en pleno vuelo</span>
+    </h2>
     <p>A los veinte entré al mundo adulto por la puerta de la universidad. Como casi todo el mundo a esa edad, me rompieron el corazón y rompí un par de corazones. Aprendí lo que era el deseo y lo que era la pérdida. Y, sin darme cuenta, fui montando capa sobre capa de identidad: estudiante de tal carrera, hincha de tal equipo, simpatizante de tal corriente política, miembro de tal grupo de amigos, profesional con tales aspiraciones. Cada capa parecía responder a una elección consciente. Hoy entiendo que casi ninguna lo era.</p>
     <p>Aquí entra en escena el aparato conceptual más útil que la psicología cognitiva contemporánea ha producido sobre el funcionamiento ordinario de la mente: la distinción entre <strong>Sistema 1 y Sistema 2</strong> popularizada por Daniel Kahneman en su libro <em>Thinking, Fast and Slow</em> (2011), aunque la terminología original se debe a Keith Stanovich y Richard West. El Sistema 1 es rápido, automático, intuitivo, emocional; opera sin esfuerzo, sin conciencia, basándose en patrones aprendidos. El Sistema 2 es lento, deliberado, analítico, esforzado. La intuición popular sería que el Sistema 2 es el verdadero "yo", el que decide; pero la investigación de Kahneman demuestra exactamente lo contrario: el Sistema 2 es perezoso por diseño, y la inmensa mayoría de nuestras decisiones cotidianas las toma el Sistema 1 antes de que el Sistema 2 alcance siquiera a darse por enterado. Lo que llamamos "yo decidí" es, casi siempre, un Sistema 2 racionalizando a posteriori una decisión que el Sistema 1 ya había tomado.</p>
     <p>Conviene cruzar esta descripción con la neurociencia de la <strong>Red Neuronal por Defecto</strong>. Los trabajos de Raichle, Buckner y Andrews-Hanna han ido cartografiando con precisión creciente cómo la DMN orquesta la actividad mental autorreferencial: la rumiación sobre uno mismo, la construcción de la narrativa autobiográfica, la simulación de escenarios futuros, la evaluación constante de la propia posición social. Cuando no estamos absortos en una tarea, la DMN se enciende y nos cuenta, una y otra vez, la historia de quiénes somos, de dónde venimos, hacia dónde vamos, qué pensamos que los demás piensan de nosotros. Esa narración es tan continua y tan envolvente que la confundimos con la realidad misma.</p>
@@ -306,7 +391,10 @@
   </section>
 
   <section id="cuarenta">
-    <h2>V. Los cuarenta: la rotura de la vasija</h2>
+    <h2>
+      <span class="ch-num">V &mdash; Los cuarenta</span>
+      <span class="ch-title">La rotura de la vasija</span>
+    </h2>
     <p>A los cuarenta el personaje que yo había construido se rompió. No es necesario que detalle aquí los hechos concretos —pérdidas, fracasos, rupturas, desencantos—; lo importante no es el contenido sino la estructura. La estructura es esta: en algún momento, para casi todo el mundo, lo que durante décadas funcionó como identidad deja de funcionar. La máscara se cuartea. El rostro debajo, que llevaba años sin recibir aire, se asoma asustado.</p>
     <p>Pocos eventos psicológicos están mejor descritos por una imagen mística que esto. Y la imagen es la <strong>Shevirat HaKelim</strong>, la rotura de las vasijas, doctrina central de la Cábala luriánica formulada por Isaac Luria en la Safed del siglo XVI. La narración, en versión apretada, es la siguiente. Antes de la creación, la Luz Infinita —<em>Or Ein Sof</em>— lo llenaba todo. Para que pudiera existir un mundo, Dios realizó un gesto inicial llamado <strong>tzimtzum</strong>: una contracción, un retraerse hacia adentro de sí mismo, dejando un espacio vacío. En ese espacio vacío hizo emanar diez vasijas —las <em>sefirot</em>— destinadas a contener la Luz divina. Pero las vasijas inferiores no soportaron la intensidad de la Luz que se vertía en ellas y se quebraron. Las chispas divinas se dispersaron, los fragmentos cayeron, y de esos fragmentos se formaron las cáscaras —las <em>kelipot</em>— en las que cada chispa quedó atrapada. El mundo material que habitamos es, según esta doctrina, el campo donde esas chispas esperan ser liberadas.</p>
     <p>La función espiritual del ser humano es el <strong>tikún olam</strong>: la reparación del mundo, que en su sentido cabalístico original significa, sobre todo, la reparación de uno mismo entendido como microcosmos de aquella ruptura primordial. Cada acto consciente, cada gesto realizado con la intención correcta —<em>kavaná</em>—, libera una chispa. El proyecto humano no es huir de este mundo: es soldar lo que en él, y en uno mismo, está roto.</p>
@@ -323,7 +411,10 @@
   </section>
 
   <section id="regreso">
-    <h2>VI. El regreso a la Luz: armando el rompecabezas</h2>
+    <h2>
+      <span class="ch-num">VI &mdash; El regreso a la Luz</span>
+      <span class="ch-title">Armando el rompecabezas</span>
+    </h2>
     <p>Si los cuarenta fueron la rotura, lo que viene después es el lento, terco, a veces desesperante trabajo de soldar las piezas. Aquí es donde el ensayo se vuelve más delicado, porque es donde más fácilmente uno puede caer en los lugares comunes de la literatura espiritual contemporánea, esa que promete despertares en diez pasos y serenidad permanente al precio de un retiro de fin de semana. Quiero evitar todo eso.</p>
     <p>Voy a organizar lo que voy comprendiendo en torno a las tres preguntas del prólogo, ofreciendo no respuestas definitivas sino aproximaciones tentativas.</p>
     <p><strong>¿Qué es la vida?</strong> A medida que el trabajo interior avanza, la respuesta que se me va presentando es esta: la vida, en su dimensión más profunda, es algo cercano a una <strong>simulación</strong>, a un juego, a un escenario montado para que el alma experimente las emociones que en su estado de origen no podría experimentar. No me refiero, evidentemente, a una simulación en el sentido informático contemporáneo. Me refiero a algo parecido a lo que el hinduismo nombra como <em>lila</em>, el juego cósmico: una representación que la conciencia hace de sí misma para descubrirse a sí misma. La vida es el escenario donde lo eterno experimenta lo temporal, donde lo unitario experimenta lo plural, donde la luz aprende a mirarse desde la perspectiva de la oscuridad.</p>
@@ -340,7 +431,10 @@
   </section>
 
   <section id="conclusion">
-    <h2>VII. Conclusión: la vasija que aún aprende a sonar</h2>
+    <h2>
+      <span class="ch-num">VII &mdash; Conclusión</span>
+      <span class="ch-title">La vasija que aún aprende a sonar</span>
+    </h2>
     <p>Llego al final de este ensayo con una declaración que me parece la más importante de todo el texto: <strong>yo aún no he aprendido a vibrar en la frecuencia de la Fuente</strong>. No la conozco. No la domino. No tengo respuestas finales sobre cómo llegar allí. Si alguien las espera de este texto, queda decepcionado de antemano, y prefiero decepcionarlo ahora a venderle una promesa que no puedo cumplir. Cualquiera que afirme haber llegado, lo digo con respeto pero con firmeza, probablemente está vendiendo solamente una nueva máscara, más pulida que las anteriores.</p>
     <p>Lo que sí voy comprendiendo, y esto sí lo puedo afirmar con la modesta autoridad de quien lo está intentando todos los días, es lo siguiente.</p>
     <p>Mientras se sana la vasija —pieza por pieza, herida por herida, perdón por perdón—, y mientras se va reorganizando lentamente esa Red Neuronal por Defecto que durante décadas me contó la misma historia sobre quién era yo, lo único que queda realmente disponible, lo único que no es ya otra máscara más, es <strong>vivir en la contemplación del aquí y del ahora</strong>. No es un programa espiritual. No es una técnica. Es lo único que sobra cuando todo lo demás se ha mostrado como construcción.</p>
@@ -396,5 +490,39 @@
   <footer>&#9674;</footer>
 
 </main>
+
+<button id="back-to-top" title="Volver al inicio" aria-label="Volver al inicio">↑</button>
+
+<script>
+  const progress = document.getElementById('progress');
+  const backBtn = document.getElementById('back-to-top');
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = document.querySelectorAll('section');
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    progress.style.width = (scrolled / total * 100) + '%';
+
+    backBtn.classList.toggle('visible', scrolled > 600);
+  }, { passive: true });
+
+  backBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        tocLinks.forEach(a => {
+          a.parentElement.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
 </body>
 </html>
